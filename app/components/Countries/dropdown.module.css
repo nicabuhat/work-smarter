@@ -1,0 +1,22 @@
+.dropdown {
+  position: relative;
+}
+
+.dropdown-input:focus-within {
+  border-radius: 6px 6px 0 0;
+}
+.dropdown-input:focus-within i {
+  transform: rotate(180deg);
+}
+
+.dropdown-input i {
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdown-list {
+  position: absolute;
+}
+
+.dropdown-list li:hover {
+  background-color: var(--cl-accent);
+}

@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./font.css";
+@import "./fontawesome.css";
+
+:root {
+  --cl-accent: #fd9a3d;
+  --cl-primary: #1a99a0;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+  background-color: #f4f4f6;
+}
+
+input:focus,
+input:active {
+  border: 0;
+  outline: 0;
+}

@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Pricing {
+  id                     Int    @id @default(autoincrement())
+  region                 String
+  country_name           String
+  country_code           String
+  format                 String
+  contextual_plus        String
+  publisher_1pd          String
+  local_publisher_1pd    String @default("*On request")
+  search_intent          String
+  data_provider_segments String @default("*On request")
+}

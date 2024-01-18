@@ -1,0 +1,21 @@
+.countries {
+  height: 100%;
+  grid-row: span 1 / span 1;
+  display: flex;
+  align-items: end;
+  background: url("/hero.svg"),
+    linear-gradient(
+      #eab610 -0.37%,
+      #ebb815 2.58%,
+      #f2c735 19.28%,
+      #f7d34e 36.97%,
+      #fbdc60 55.63%,
+      #fee16a 75.28%,
+      #ffe36e 97.88%
+    );
+  background-repeat: no-repeat;
+  background-position: 100% 85%;
+  background-size: cover;
+  border-radius: 48px;
+  padding: 24px;
+}
