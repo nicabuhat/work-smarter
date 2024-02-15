@@ -6,11 +6,14 @@ import URL from "@/models/URL";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { realpathSync } from "fs";
+import ExcelJS from "exceljs";
+import { join } from "path";
 
 export default function AddBtn(): JSX.Element {
   const country = useAppSelector((state) => state.countryReducer);
   const column = useAppSelector((state) => state.columnReducer);
   const [urls, setURLs] = useState([] as string[]);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const getURLs = async () => {
     try {
@@ -31,68 +34,52 @@ export default function AddBtn(): JSX.Element {
 
   const handleGenerateExcel = async () => {
     try {
-      const response = await fetch("/api/generate");
-      const excelBlob = await response.blob();
+      setIsDownloading(true);
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ data: urls }),
+      });
 
       // Download the Excel file
+      const excelBlob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([excelBlob]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "example.xlsx");
+      link.setAttribute("download", "output.xlsx");
       document.body.appendChild(link);
       link.click();
       link!.parentNode!.removeChild(link);
+      setIsDownloading(false);
+      console.log("downloaded");
     } catch (error) {
       console.error("Error generating Excel file:", error);
     }
   };
-  // const handleExport = async () => {
+  // const handleGenerateExcel = async () => {
   //   try {
-  //     const res = await fetch("/template.xlsx"); // Fetch the template file directly
-  //     const templateBlob = await res.blob(); // Convert the response to a Blob
+  //     const response = await fetch("/api/generate", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-type": "application/json",
+  //       },
+  //       body: JSON.stringify(dataToWrite),
+  //     });
+  //     const excelBlob = await response.blob();
 
-  //     const reader = new FileReader();
-  //     reader.onload = async () => {
-  //       const data = reader.result as ArrayBuffer;
-  //       const workbook = XLSX.read(new Uint8Array(data), { type: "array" }); // Change type to "array"
-
-  //       const modifiedTemplate = modifyTemplateWithData(workbook, urls);
-  //       writeToFile(modifiedTemplate);
-  //     };
-  //     reader.readAsArrayBuffer(templateBlob);
+  //     // Download the Excel file
+  //     const url = window.URL.createObjectURL(new Blob([excelBlob]));
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "example.xlsx");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link!.parentNode!.removeChild(link);
   //   } catch (error) {
-  //     console.error("Error exporting data:", error);
+  //     console.error("Error generating Excel file:", error);
   //   }
-  // };
-
-  // const modifyTemplateWithData = (
-  //   template: XLSX.WorkBook,
-  //   newData: string[]
-  // ) => {
-  //   const worksheet = template.Sheets[template.SheetNames[0]];
-  //   newData.forEach((data: string, index: number) => {
-  //     worksheet["H" + (18 + index + 1)] = { v: data };
-  //   });
-  //   return template;
-  // };
-
-  // const writeToFile = (modifiedTemplate: XLSX.WorkBook) => {
-  //   const wbout = XLSX.write(modifiedTemplate, {
-  //     type: "binary", // Change type to "binary"
-  //     bookType: "xlsx",
-  //   });
-  //   const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
-  //   saveAs(blob, "output.xlsx");
-  // };
-
-  // // Utility function to convert string to ArrayBuffer
-  // const s2ab = (s: string) => {
-  //   const buf = new ArrayBuffer(s.length);
-  //   const view = new Uint8Array(buf);
-  //   for (let i = 0; i < s.length; i++) {
-  //     view[i] = s.charCodeAt(i) & 0xff;
-  //   }
-  //   return buf;
   // };
 
   useEffect(() => {
@@ -113,7 +100,6 @@ export default function AddBtn(): JSX.Element {
   });
 
   const handleClick = () => {
-    console.log(urls);
     handleGenerateExcel();
   };
 
@@ -121,6 +107,7 @@ export default function AddBtn(): JSX.Element {
     <button
       className="flex items-center justify-center gap-2 bg-secondary text-white h-full rounded-full px-3"
       onClick={handleClick}
+      disabled={isDownloading}
     >
       <i className="fa-solid fa-plus text-base text-white"></i>
       <span>Add Column</span>
