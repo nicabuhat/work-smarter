@@ -1,0 +1,29 @@
+.dropdown {
+  width: 90%;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  margin-bottom: 24px;
+  z-index: 99;
+}
+
+.dropdownInput:focus-within {
+  border-radius: 24px 24px 0 0;
+}
+.dropdownInput:focus-within i {
+  transform: rotate(180deg);
+}
+
+.dropdownInput i {
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdownList {
+  top: 50px;
+  overflow: auto;
+}
+
+.dropdownList li:hover {
+  background-color: var(--cl-accent);
+}

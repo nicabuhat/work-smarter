@@ -18,12 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sfpro.className}>
-        <div className="max-w-7xl mx-auto">
-          <Providers>
-            <div className="h-full min-h-[100vh] grid grid-cols-12 gap-6 py-6">
-              {children}
-            </div>
-          </Providers>
+        <div className="max-w-7xl mx-auto py-6">
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>

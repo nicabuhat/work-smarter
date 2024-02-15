@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,4 +18,27 @@ model Pricing {
   local_publisher_1pd    String @default("*On request")
   search_intent          String
   data_provider_segments String @default("*On request")
+}
+
+model Parent_Category {
+  name String @db.VarChar(199)
+  id   Int    @id @default(autoincrement())
+
+  @@map("Parent Category")
+}
+
+model Subcategory {
+  name String @db.VarChar(199)
+  id   Int    @id @default(autoincrement())
+  URL  URL[]
+}
+
+model URL {
+  url            String       @db.VarChar(199)
+  country_code   String?      @db.VarChar(2)
+  id             Int          @id @default(autoincrement())
+  subcategory_id Int?
+  Subcategory    Subcategory? @relation(fields: [subcategory_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subcategory_id")
+
+  @@index([subcategory_id], map: "subcategory_id")
 }

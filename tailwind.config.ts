@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         primary: "var(--cl-primary)",
         accent: "var(--cl-accent)",
+        secondary: "var(--cl-secondary)",
       },
       fontFamily: {
         sans: ["var(--font-sfpro)"],

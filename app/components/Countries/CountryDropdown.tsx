@@ -4,9 +4,9 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setCountry } from "@/redux/features/countrySlice";
 import Country from "@/models/Country";
-import "./dropdown.module.css";
+import styles from "./country_dropdown.module.css";
 
-const Dropdown = () => {
+export default function CountryDropdown(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const [countries, setCountries] = useState([] as Country[]);
@@ -62,8 +62,10 @@ const Dropdown = () => {
   }, [countries, inputValue]);
 
   return (
-    <div className="dropdown">
-      <div className="dropdown-input border border-gray-300 rounded-3xl p-2 flex items-center justify-between bg-gray-50">
+    <div className={styles.dropdown}>
+      <div
+        className={`${styles.dropdownInput} border border-gray-300 rounded-3xl p-2 flex items-center justify-between bg-gray-50`}
+      >
         <input
           type="text"
           placeholder="search country"
@@ -76,7 +78,9 @@ const Dropdown = () => {
         <i className="fa-light fa-caret-down text-xl text-accent"></i>
       </div>
       {checked && (
-        <ul className="dropdown-list w-full flex flex-col max-h-48 overflow-auto border border-gray-300 border-t-transparent rounded-b-3xl bg-gray-50">
+        <ul
+          className={`${styles.dropdownList} w-full flex flex-col max-h-48 overflow-auto border border-gray-300 border-t-transparent rounded-b-3xl bg-gray-50 absolute`}
+        >
           {searchList &&
             searchList.map((country) => {
               return (
@@ -93,6 +97,4 @@ const Dropdown = () => {
       )}
     </div>
   );
-};
-
-export default Dropdown;
+}

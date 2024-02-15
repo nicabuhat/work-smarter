@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import countryReducer from "@/redux/features/countrySlice";
+import columnReducer from "@/redux/features/columnSlice";
 
 export const store = configureStore({
-  reducer: { countryReducer },
+  reducer: { countryReducer, columnReducer },
   devTools: process.env.NODE_ENV !== "production",
 });
 

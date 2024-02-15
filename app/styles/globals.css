@@ -1,12 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "./font.css";
+@import "./solid.css";
 @import "./fontawesome.css";
 
 :root {
-  --cl-accent: #fd9a3d;
-  --cl-primary: #1a99a0;
+  --cl-accent: #ff4256;
+  --cl-secondary: #274293;
+  --cl-primary: #101c40;
 }
 
 html {
@@ -14,6 +15,7 @@ html {
 }
 
 body {
+  color: var(--cl-primary);
   background-color: #f4f4f6;
 }
 
