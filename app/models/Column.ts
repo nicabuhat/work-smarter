@@ -12,14 +12,14 @@ export default interface Column {
   urls?: string[];
   banner_volume?: {
     value: number;
-    cpm: number;
+    cpm: string;
   };
   video_volume?: {
     value: number;
-    cpm: number;
+    cpm: string;
   };
-  native_volum?: {
+  native_volume?: {
     value: number;
-    cpm: number;
+    cpm: string;
   };
 }

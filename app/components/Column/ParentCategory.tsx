@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
-import { updateCategory } from "@/app/redux/features/columnSlice";
+import { updateCategory } from "@/redux/features/columnsSlice";
 import Dropdown from "@/components/Dropdown";
 import Category from "@/models/Category";
 
@@ -33,7 +33,9 @@ export default function ParentCategory({ id }: { id: number }): JSX.Element {
   };
 
   const handleClick = (category: Category) => {
-    dispatch(updateCategory({ category: category, type: "parent_category" }));
+    dispatch(
+      updateCategory({ category: category, type: "parent_category", id: id })
+    );
     setInputValue(category.name);
     setChecked(false);
   };

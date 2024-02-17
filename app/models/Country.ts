@@ -12,4 +12,5 @@ export default interface Country {
     nativeName: NativeName;
   };
   cca2: string;
+  region: string;
 }

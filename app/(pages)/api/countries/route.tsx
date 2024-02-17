@@ -5,7 +5,7 @@ import Country from "@/models/Country";
 export async function GET(req: NextRequest) {
   try {
     const data = await fetch(
-      "https://restcountries.com/v3.1/all?fields=name,cca2",
+      "https://restcountries.com/v3.1/all?fields=name,cca2,region",
       {
         cache: "force-cache",
       }

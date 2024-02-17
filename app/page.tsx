@@ -1,5 +1,5 @@
 import Countries from "@/components/Countries/Countries";
-import Column from "@/app/components/Column/Column";
+import Rows from "@/components/Sections/Rows";
 
 export default function Home() {
   return (
@@ -12,9 +12,7 @@ export default function Home() {
           <aside className="bg-slate-400 col-span-4" />
         </div>
 
-        <div className="h-full w-full">
-          <Column />
-        </div>
+        <Rows />
       </main>
     </>
   );

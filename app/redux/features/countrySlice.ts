@@ -15,6 +15,7 @@ const initialState = {
     },
   },
   cca2: "",
+  region: "",
 } as CountryState;
 
 export const country = createSlice({

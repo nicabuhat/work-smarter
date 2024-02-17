@@ -1,11 +1,11 @@
 "use client";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
-import { updateCategory } from "@/app/redux/features/columnSlice";
+import { updateCategory } from "@/redux/features/columnsSlice";
 import Dropdown from "@/components/Dropdown";
 import Category from "@/models/Category";
 
-export default function SubCategory(): JSX.Element {
+export default function SubCategory({ id }: { id: number }): JSX.Element {
   const dispatch = useAppDispatch();
 
   const [categories, setCategories] = useState([] as Category[]);
@@ -33,7 +33,9 @@ export default function SubCategory(): JSX.Element {
   };
 
   const handleClick = (category: Category) => {
-    dispatch(updateCategory({ category: category, type: "subcategory" }));
+    dispatch(
+      updateCategory({ category: category, type: "subcategory", id: id })
+    );
     setInputValue(category.name);
     setChecked(false);
   };

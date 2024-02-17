@@ -17,7 +17,7 @@
 
 - Banner Volume 70% VR => manual input
 - CPM / Bid Guidance => automated from table
-- Video Volume 70% VR => computed 55% banner
+- Video Volume 70% VR => computed 50% banner
 - CPM / Bid Guidance => automated from table
 - Native Volume 70% VR => computed 15% video
 - CPM / Bid Guidance => automated from table
@@ -51,7 +51,7 @@
 
 - [x] countries ISO 2 letter format
 - [x] DB table for the pricing
-- [] DB table for the domains
+- [x] DB table for the domains
 
 ## Components
 
@@ -71,3 +71,14 @@
   - [] list total
 - keywords
   - [] manual input for the list
+
+<!-- FIXES -->
+
+{
+UPDATE test SET log = REPLACE(REPLACE(log, '\r', ''), '\n', '');
+}
+
+<!-- NOTES: DBS -->
+
+contextual => URL
+banner volume => pricing

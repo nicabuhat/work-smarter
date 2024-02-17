@@ -22,11 +22,6 @@ export default function Dropdown({
   searchList,
   handleClick,
 }: DropdownProps): JSX.Element {
-  useEffect(() => {
-    if (!checked) {
-      console.log(checked);
-    }
-  }, [checked]);
   return (
     <form className={styles.dropdown}>
       <fieldset
