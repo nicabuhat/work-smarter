@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sfpro.className}>
-        <div className="max-w-7xl mx-auto py-6">
+        <div className="min-h-screen max-w-7xl mx-auto py-6">
           <Providers>{children}</Providers>
         </div>
       </body>

@@ -28,9 +28,10 @@ model Parent_Category {
 }
 
 model Subcategory {
-  name String @db.VarChar(199)
-  id   Int    @id @default(autoincrement())
-  URL  URL[]
+  name           String           @db.VarChar(199)
+  id             Int              @id @default(autoincrement())
+  Publisher_Deal Publisher_Deal[]
+  URL            URL[]
 }
 
 model URL {
@@ -41,4 +42,16 @@ model URL {
   Subcategory    Subcategory? @relation(fields: [subcategory_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subcategory_id")
 
   @@index([subcategory_id], map: "subcategory_id")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model Publisher_Deal {
+  publisher     String       @db.VarChar(199)
+  sub_publisher String       @db.VarChar(199)
+  category_id   Int?
+  publisher_id  Int          @id @default(autoincrement())
+  Subcategory   Subcategory? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_id_fk")
+
+  @@index([category_id], map: "category_id_fk")
+  @@map("Publisher Deal")
 }

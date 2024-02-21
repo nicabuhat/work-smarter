@@ -9,7 +9,7 @@ interface DropdownProps {
   handleCheckedChange: (check: boolean) => void;
   inputValue: string;
   handleInputChange: (input: string) => void;
-  searchList: any[];
+  searchList?: any[];
   handleClick: (any: any) => void;
 }
 

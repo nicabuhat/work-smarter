@@ -1,4 +1,5 @@
 import Column from "@/models/Column";
+import Country from "@/models/Country";
 
 const countries = [
   "AU",
@@ -76,7 +77,59 @@ export const getNewCountryCode = (region: string) => {
   }
 };
 
-export const handleGenerateExcel = async (data: Column[]) => {
+export const getURLs = async (country: Country, currentColumn: Column) => {
+  try {
+    const res = await fetch(
+      `/api/url?country_code=${country.cca2}&subcategory_id=${currentColumn.subcategory?.id}`
+    );
+    const urls = await res.json(); // Use await here
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch urls");
+    }
+
+    return urls;
+  } catch (error) {
+    console.error("Catch Error:", error);
+  }
+};
+
+export const getPublishers = async (currentColumn: Column) => {
+  try {
+    const res = await fetch(
+      `/api/publishers?category_id=${currentColumn.subcategory?.id}`
+    );
+
+    const publishers = await res.json(); // Use await here
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch publishers");
+    }
+
+    return publishers;
+  } catch (error) {
+    console.error("Catch Error:", error);
+  }
+};
+
+export const getCPMs = async (country: Country) => {
+  try {
+    const res = await fetch(
+      `/api/cpm?country_code=${country.cca2}&region=${country.region}`
+    );
+    const cpms = await res.json(); // Use await here
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch cpms");
+    }
+
+    return cpms;
+  } catch (error) {
+    console.error("Catch Error:", error);
+  }
+};
+
+export const generateExcel = async (data: Column[]) => {
   try {
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -91,7 +144,7 @@ export const handleGenerateExcel = async (data: Column[]) => {
     const url = window.URL.createObjectURL(new Blob([excelBlob]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "output.xlsx");
+    link.setAttribute("download", "Brief Response.xlsx");
     document.body.appendChild(link);
     link.click();
     link!.parentNode!.removeChild(link);

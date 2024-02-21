@@ -7,12 +7,16 @@ import Dropdown from "@/components/Dropdown";
 export default function BannerVolume({ id }: { id: number }): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("" as string);
-  const [searchList, setSearchList] = useState([]);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    dispatch(updateVolume({ volume: parseInt(inputValue), id: id }));
+    if (inputValue)
+      dispatch(updateVolume({ volume: parseInt(inputValue), id: id }));
   }, [inputValue, dispatch, id]);
+
+  useEffect(() => {
+    console.log(inputValue);
+  }, [inputValue]);
 
   return (
     <div className="h-full">
@@ -21,8 +25,9 @@ export default function BannerVolume({ id }: { id: number }): JSX.Element {
         checked={checked}
         handleCheckedChange={(check) => setChecked(check)}
         inputValue={inputValue}
-        handleInputChange={(input) => setInputValue(input)}
-        searchList={searchList}
+        handleInputChange={(inputValue) => {
+          setInputValue(inputValue);
+        }}
         handleClick={() => {}}
       />
     </div>
