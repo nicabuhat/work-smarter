@@ -141,7 +141,7 @@ export const generateExcel = async (data: Column[]) => {
 
     // Download the Excel file
     const excelBlob = await response.blob();
-    const url = window.URL.createObjectURL(new Blob([excelBlob]));
+    const url = window.URL.createObjectURL(excelBlob);
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("download", "Brief Response.xlsx");
