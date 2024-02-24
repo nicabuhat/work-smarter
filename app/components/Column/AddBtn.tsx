@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   updateUrl,
@@ -92,6 +92,10 @@ export default function AddBtn({ id }: { id: number }): JSX.Element {
 
     setChecked(!checked);
   };
+
+  useEffect(() => {
+    console.log(columns);
+  }, [columns]);
 
   return (
     <button

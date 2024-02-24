@@ -117,6 +117,7 @@ export const getCPMs = async (country: Country) => {
     const res = await fetch(
       `/api/cpm?country_code=${country.cca2}&region=${country.region}`
     );
+
     const cpms = await res.json(); // Use await here
 
     if (!res.ok) {

@@ -1,10 +1,3 @@
-export interface Publisher {
-  [key: string]: {
-    publisher: string;
-    subPublishers: string[];
-  };
-}
-
 export default interface Column {
   [key: string]: any;
   id?: number;
@@ -17,7 +10,10 @@ export default interface Column {
     id: number;
   };
   urls?: string[];
-  publishers?: Publisher[];
+  publishers?: {
+    publisher: string;
+    subPublishers: string[];
+  }[];
   banner_volume?: {
     value: number;
     cpm: string;
