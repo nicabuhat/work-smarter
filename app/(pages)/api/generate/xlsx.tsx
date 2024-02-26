@@ -1,14 +1,129 @@
-import Column, { Publisher } from "@/models/Column";
+import Column from "@/models/Column";
 
 // Globals
 let publisherColumnLetters: number[] = [];
 let contextColumnLetters: number[] = [];
 const categoryRow = 2;
 const bannerRow = 5;
-const videoRow = 7;
-const nativeRow = 9;
+
 const publisherRowStart = 13;
 const contextRowStart = 18;
+
+const generateCPM = (array: any[], cpmArray: any[], output: any) => {
+  for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < 6; j++) {
+      const cell = output.cell(cpmArray[i]).relativeCell(j, 0);
+      switch (j) {
+        case 0:
+          cell.value(`${array[i].banner_volume?.value}m`);
+          break;
+        case 1:
+          cell.value(`${array[i].banner_volume?.cpm}`);
+          break;
+        case 2:
+          cell.value(`${array[i].video_volume?.value}m`);
+          break;
+        case 3:
+          cell.value(`${array[i].video_volume?.cpm}`);
+          break;
+        case 4:
+          cell.value(`${array[i].native_volume?.value}m`);
+          break;
+        case 5:
+          cell.value(`${array[i].native_volume?.cpm}`);
+          break;
+        default:
+          return;
+      }
+      cell.style({ horizontalAlignment: "right" });
+    }
+  }
+};
+
+const generateCategoryHeader = (
+  array: any[],
+  caregoryArray: any[],
+  output: any
+) => {
+  for (let i = 0; i < array.length; i++) {
+    const cell = output.cell(caregoryArray[i]);
+    cell.value(array[i].subcategory?.name);
+    cell.style({ italic: true, horizontalAlignment: "center" });
+  }
+};
+
+const populateContext = (columns: Column[], output: any) => {
+  const contextArray = columns.filter((c) => c.parent_category!.id === 3);
+
+  const contextColStartArray = contextColumnLetters.map((letter) => {
+    return `${String.fromCharCode(letter)}${contextRowStart}`;
+  });
+  const contextCpmArray = contextColumnLetters.map((letter) => {
+    return `${String.fromCharCode(letter)}${bannerRow}`;
+  });
+  const contextCategoryArray = contextColumnLetters.map((letter) => {
+    return `${String.fromCharCode(letter)}${categoryRow}`;
+  });
+
+  for (let i = 0; i < contextArray.length; i++) {
+    for (let j = 0; j < contextArray[i].urls!.length; j++) {
+      const cell = output.cell(contextColStartArray[i]).relativeCell(j, 0);
+      cell.value(contextArray[i].urls![j]);
+      cell.style({ bold: false, indent: 0 });
+    }
+  }
+
+  generateCPM(contextArray, contextCpmArray, output);
+  generateCategoryHeader(contextArray, contextCategoryArray, output);
+};
+
+const populatePublisher = (columns: Column[], output: any) => {
+  const publisherColStartArray = (row: any) =>
+    publisherColumnLetters.map((letter) => {
+      return `${String.fromCharCode(letter)}${row}`;
+    });
+
+  const publisherCpmArray = publisherColumnLetters.map((letter) => {
+    return `${String.fromCharCode(letter)}${bannerRow}`;
+  });
+
+  const publisherCategoryArray = publisherColumnLetters.map((letter) => {
+    return `${String.fromCharCode(letter)}${categoryRow}`;
+  });
+
+  const publisherArray = columns.filter((c) => c.parent_category!.id === 1);
+  for (let i = 0; i < publisherArray.length; i++) {
+    // reset row start every iteration
+    let currentRow = publisherRowStart;
+    for (let j = 0; j < publisherArray[i].publishers!.length; j++) {
+      const cell = output
+        .cell(publisherColStartArray(currentRow)[i])
+        .relativeCell(j, 0);
+      cell.value(publisherArray[i].publishers![j].publisher);
+      cell.style({ bold: true, indent: 0 });
+      for (
+        let l = 0;
+        l < publisherArray[i].publishers![j].subPublishers.length;
+        l++
+      ) {
+        const cell = output
+          .cell(publisherColStartArray(currentRow)[i])
+          .relativeCell(j + 1, 0); // j + 1 to add row to next line
+        cell.value(publisherArray[i].publishers![j].subPublishers[l]);
+        cell.style({ bold: false, indent: 1 });
+        currentRow += 1;
+      }
+    }
+  }
+
+  generateCPM(publisherArray, publisherCpmArray, output);
+  generateCategoryHeader(publisherArray, publisherCategoryArray, output);
+};
+
+export const populateData = async (output: any, columns: Column[]) => {
+  populateContext(columns, output);
+  populatePublisher(columns, output);
+};
 
 export const generateColumns = async (
   template: any,
@@ -82,99 +197,4 @@ export const generateColumns = async (
       }
     }
   }
-};
-
-const populateContext = (columns: Column[], output: any) => {
-  const contextArray = columns.filter((c) => c.parent_category!.id === 3);
-
-  const contextColStartArray = contextColumnLetters.map((letter) => {
-    return `${String.fromCharCode(letter)}${contextRowStart}`;
-  });
-  const contextCpmArray = contextColumnLetters.map((letter) => {
-    return `${String.fromCharCode(letter)}${bannerRow}`;
-  });
-  const contextCategoryArray = contextColumnLetters.map((letter) => {
-    return `${String.fromCharCode(letter)}${categoryRow}`;
-  });
-
-  for (let i = 0; i < contextArray.length; i++) {
-    for (let j = 0; j < 6; j++) {
-      const cell = output.cell(contextCpmArray[i]).relativeCell(j, 0);
-      switch (j) {
-        case 0:
-          cell.value(`${contextArray[i].banner_volume?.value}m`);
-          break;
-        case 1:
-          cell.value(`${contextArray[i].banner_volume?.cpm}`);
-          break;
-        case 2:
-          cell.value(`${contextArray[i].video_volume?.value}m`);
-          break;
-        case 3:
-          cell.value(`${contextArray[i].video_volume?.cpm}`);
-          break;
-        case 4:
-          cell.value(`${contextArray[i].native_volume?.value}m`);
-          break;
-        case 5:
-          cell.value(`${contextArray[i].native_volume?.cpm}`);
-          break;
-        default:
-          return;
-      }
-      cell.style({ horizontalAlignment: "right" });
-    }
-  }
-  for (let i = 0; i < contextArray.length; i++) {
-    for (let j = 0; j < contextArray[i].urls!.length; j++) {
-      const cell = output.cell(contextColStartArray[i]).relativeCell(j, 0);
-      cell.value(contextArray[i].urls![j]);
-      cell.style({ bold: false, indent: 0 });
-    }
-  }
-  for (let i = 0; i < contextArray.length; i++) {
-    const cell = output.cell(contextCategoryArray[i]);
-    cell.value(contextArray[i].subcategory?.name);
-    cell.style({ italic: true, horizontalAlignment: "center" });
-  }
-};
-
-const populatePublisher = (columns: Column[], output: any) => {
-  const publisherColStartArray = (row: any) =>
-    publisherColumnLetters.map((letter) => {
-      return `${String.fromCharCode(letter)}${row}`;
-    });
-  const publisherCpmArray = publisherColumnLetters.map((letter) => {
-    return `${String.fromCharCode(letter)}${bannerRow}`;
-  });
-
-  let currentRow = publisherRowStart;
-
-  const publisherArray = columns.filter((c) => c.parent_category!.id === 1);
-  for (let i = 0; i < publisherArray.length; i++) {
-    for (let j = 0; j < publisherArray[i].publishers!.length; j++) {
-      const cell = output
-        .cell(publisherColStartArray(currentRow)[0])
-        .relativeCell(j, 0);
-      cell.value(publisherArray[i].publishers![j].publisher);
-      cell.style({ bold: true, indent: 0 });
-      for (
-        let l = 0;
-        l < publisherArray[i].publishers![j].subPublishers.length;
-        l++
-      ) {
-        const cell = output
-          .cell(publisherColStartArray(currentRow)[0])
-          .relativeCell(j + 1, 0);
-        cell.value(publisherArray[i].publishers![j].subPublishers[l]);
-        cell.style({ bold: false, indent: 1 });
-        currentRow += 1;
-      }
-    }
-  }
-};
-
-export const populateData = async (output: any, columns: Column[]) => {
-  populateContext(columns, output);
-  populatePublisher(columns, output);
 };

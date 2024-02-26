@@ -49,9 +49,9 @@ model Publisher_Deal {
   publisher     String       @db.VarChar(199)
   sub_publisher String       @db.VarChar(199)
   category_id   Int?
-  publisher_id  Int          @id @default(autoincrement())
+  publisher_id  Int          @id
   Subcategory   Subcategory? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_id_fk")
 
-  @@index([category_id], map: "category_id_fk")
+  @@index([category_id], map: "Publisher Deal_Subcategory_id_fk")
   @@map("Publisher Deal")
 }

@@ -1,9 +1,10 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useRef } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setCountry } from "@/redux/features/countrySlice";
 import Country from "@/models/Country";
+import { handleClickOutside } from "@/util/utilities";
 import styles from "./country_dropdown.module.css";
 
 export default function CountryDropdown(): JSX.Element {
@@ -13,6 +14,8 @@ export default function CountryDropdown(): JSX.Element {
   const [inputValue, setInputValue] = useState("" as string);
   const [searchList, setSearchList] = useState([] as Country[]);
   const [checked, setChecked] = useState(false);
+
+  const componentRef = useRef(null);
 
   const getCountriesArray = async () => {
     try {
@@ -61,8 +64,12 @@ export default function CountryDropdown(): JSX.Element {
     );
   }, [countries, inputValue]);
 
+  useEffect(() => {
+    handleClickOutside(componentRef, setChecked);
+  }, [componentRef]);
+
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdown} ref={componentRef}>
       <div
         className={`${styles.dropdownInput} border border-gray-300 rounded-3xl p-2 flex items-center justify-between bg-gray-50`}
       >

@@ -1,9 +1,10 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { updateCategory } from "@/redux/features/columnsSlice";
 import Dropdown from "@/components/Dropdown";
 import Category from "@/models/Category";
+import { handleClickOutside } from "@/util/utilities";
 
 export default function ParentCategory({ id }: { id: number }): JSX.Element {
   const dispatch = useAppDispatch();
@@ -12,6 +13,8 @@ export default function ParentCategory({ id }: { id: number }): JSX.Element {
   const [inputValue, setInputValue] = useState("" as string);
   const [searchList, setSearchList] = useState([] as Category[]);
   const [checked, setChecked] = useState(false);
+
+  const componentRef = useRef(null);
 
   const getCategoriessArray = async () => {
     try {
@@ -60,8 +63,12 @@ export default function ParentCategory({ id }: { id: number }): JSX.Element {
     );
   }, [categories, inputValue]);
 
+  useEffect(() => {
+    handleClickOutside(componentRef, setChecked);
+  }, [componentRef]);
+
   return (
-    <div className="h-full">
+    <div className="h-full" ref={componentRef}>
       <Dropdown
         type="Parent Category"
         checked={checked}

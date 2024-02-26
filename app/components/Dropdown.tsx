@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./dropdown.module.css";
 
 interface DropdownProps {
